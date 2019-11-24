@@ -4,11 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.noteapp.database.NoteDatabaseDao
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 
-class HomeViewModel(private val noteDatabaseDao: NoteDatabaseDao) : ViewModel() {
+class HomeViewModel(private val database: NoteDatabaseDao) : ViewModel() {
 
 
     /**
@@ -28,7 +26,7 @@ class HomeViewModel(private val noteDatabaseDao: NoteDatabaseDao) : ViewModel() 
      */
     val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    val notes = noteDatabaseDao.getAllNotes()
+    val notes = database.getAllNotes()
 
 
     private var _navigateToAddNoteFragment = MutableLiveData<Boolean>()
@@ -45,6 +43,39 @@ class HomeViewModel(private val noteDatabaseDao: NoteDatabaseDao) : ViewModel() 
         _navigateToAddNoteFragment.value = true
     }
 
+
+    /**
+     * Request a toast by setting this value to true.
+     *
+     * This is private because we don't want to expose setting this value to the Fragment.
+     */
+    private var _showSnackbarEvent = MutableLiveData<Boolean>()
+
+    /**
+     * If this is true, immediately `show()` a toast and call `doneShowingSnackbar()`.
+     */
+    val showSnackBarEvent: LiveData<Boolean>
+        get() = _showSnackbarEvent
+
+    fun doneShowingSnackbar() {
+        _showSnackbarEvent.value = false
+    }
+
+    fun onClear()
+    {
+        uiScope.launch {
+            clear()
+        }
+
+        _showSnackbarEvent.value = true
+    }
+
+    private suspend fun clear()
+    {
+        withContext(Dispatchers.IO) {
+            database.clear()
+        }
+    }
 
     override fun onCleared() {
         super.onCleared()

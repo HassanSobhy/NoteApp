@@ -11,9 +11,12 @@ import androidx.navigation.fragment.findNavController
 import com.example.noteapp.R
 import com.example.noteapp.database.NoteDatabase
 import com.example.noteapp.databinding.FragmentHomeBinding
+import com.google.android.material.snackbar.Snackbar
 
 
 class HomeFragment : Fragment() {
+
+    lateinit var homeViewModel: HomeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,7 +32,7 @@ class HomeFragment : Fragment() {
         val application = requireNotNull(this.activity).application
         val dataSource = NoteDatabase.getInstance(application).noteDatabaseDao
         val viewModelFactory = HomeViewModelFactory(dataSource)
-        val homeViewModel =
+        homeViewModel =
             ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
 
         binding.homeViewModel = homeViewModel
@@ -52,6 +55,21 @@ class HomeFragment : Fragment() {
                 adapter.data = it
             }
         })
+
+        homeViewModel.showSnackBarEvent.observe(this , Observer {
+            if (it == true)
+            {
+                Snackbar.make(
+                    activity!!.findViewById(android.R.id.content),
+                    getString(R.string.cleared_message),
+                    Snackbar.LENGTH_SHORT // How long to display the message.
+                ).show()
+                // Reset state to make sure the snackbar is only shown once, even if the device
+                // has a configuration change.
+                homeViewModel.doneShowingSnackbar()
+            }
+        })
+
         setHasOptionsMenu(true)
         return binding.root
     }
@@ -64,14 +82,11 @@ class HomeFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
-            R.id.clear_all_action -> deleteAllNotes()
+            R.id.clear_all_action -> homeViewModel.onClear()
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun deleteAllNotes() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
 
 }

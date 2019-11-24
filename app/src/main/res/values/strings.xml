@@ -12,4 +12,5 @@
     <string name="place_holder_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit donec consectetur semper nunc in molestie.</string>
     <string name="search">Search</string>
     <string name="clear">Clear</string>
+    <string name="cleared_message">All your data is gone forever.</string>
 </resources>
