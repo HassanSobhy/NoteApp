@@ -2,7 +2,9 @@ package com.example.noteapp.ui.addnote
 
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -56,14 +58,22 @@ class AddNoteFragment : Fragment() {
 
         when (item.itemId) {
             R.id.save_action -> {
-                addNoteViewModel.onSaveClicked(
-                    binding.titleText.text.toString(),
-                    binding.descText.text.toString()
-                )
+                if (validateData())
+                {
+                    addNoteViewModel.onSaveClicked(
+                        binding.titleText.text.toString(),
+                        binding.descText.text.toString()
+                    )
+                } else
+                {
+                    Toast.makeText(context!!,"Can't leave title or description empty" , Toast.LENGTH_SHORT).show()
+                }
+
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
 
+    private fun validateData() = !TextUtils.isEmpty(binding.titleText.text.toString()) && !TextUtils.isEmpty(binding.descText.text.toString())
 }
