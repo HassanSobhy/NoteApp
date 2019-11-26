@@ -52,7 +52,7 @@ class HomeFragment : Fragment() {
         binding.noteList.adapter = adapter
         homeViewModel.notes.observe(this, Observer {
             it?.let {
-                adapter.data = it
+                adapter.submitList(it)
             }
         })
 
