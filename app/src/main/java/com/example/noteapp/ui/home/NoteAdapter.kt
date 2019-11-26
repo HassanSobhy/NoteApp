@@ -1,14 +1,12 @@
 package com.example.noteapp.ui.home
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.noteapp.R
 import com.example.noteapp.database.Note
+import com.example.noteapp.databinding.NoteItemBinding
 
 class NoteAdapter : ListAdapter<Note,NoteAdapter.ViewHolder>(NoteDiffCallBack()) {
 
@@ -30,20 +28,19 @@ class NoteAdapter : ListAdapter<Note,NoteAdapter.ViewHolder>(NoteDiffCallBack())
         holder.bind(item)
     }
 
-    class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val title: TextView = itemView.findViewById(R.id.note_item_title_text)
-        val desc: TextView = itemView.findViewById(R.id.note_item_desc_text)
+    class ViewHolder private constructor(val binding: NoteItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
 
         fun bind(item: Note) {
-            title.text = item.title
-            desc.text = item.desc
+            binding.noteItemTitleText.text = item.title
+            binding.noteItemDescText.text = item.desc
         }
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.note_item, parent, false)
-                return ViewHolder(view)
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = NoteItemBinding.inflate(layoutInflater,parent,false)
+                return ViewHolder(binding)
             }
         }
     }
