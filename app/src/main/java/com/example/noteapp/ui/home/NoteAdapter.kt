@@ -29,11 +29,9 @@ class NoteAdapter : ListAdapter<Note,NoteAdapter.ViewHolder>(NoteDiffCallBack())
     }
 
     class ViewHolder private constructor(val binding: NoteItemBinding) : RecyclerView.ViewHolder(binding.root) {
-
-
         fun bind(item: Note) {
-            binding.noteItemTitleText.text = item.title
-            binding.noteItemDescText.text = item.desc
+            binding.note = item
+            binding.executePendingBindings()
         }
 
         companion object {

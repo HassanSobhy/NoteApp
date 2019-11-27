@@ -36,6 +36,7 @@
                     android:background="@drawable/circle_shape" />
 
                 <TextView
+                    app:setTitle="@{note}"
                     android:id="@+id/note_item_title_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -54,6 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                app:setDescription="@{note}"
                 android:fontFamily="@font/roboto"
                 android:text="@string/place_holder_text"
                 android:textSize="12sp"
