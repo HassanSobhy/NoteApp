@@ -3,6 +3,7 @@ package com.example.noteapp.ui.home
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -48,7 +49,10 @@ class HomeFragment : Fragment() {
             }
         })
 
-        val adapter = NoteAdapter()
+        val adapter = NoteAdapter(NoteListener {
+            noteId ->  Toast.makeText(context,"${noteId}",Toast.LENGTH_LONG).show()
+        })
+
         binding.noteList.adapter = adapter
         homeViewModel.notes.observe(this, Observer {
             it?.let {

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.noteapp.database.Note
 import com.example.noteapp.databinding.NoteItemBinding
 
-class NoteAdapter : ListAdapter<Note,NoteAdapter.ViewHolder>(NoteDiffCallBack()) {
+class NoteAdapter(val clickListener: NoteListener) : ListAdapter<Note,NoteAdapter.ViewHolder>(NoteDiffCallBack()) {
 
     /*var data = listOf<Note>()
         set(value) {
@@ -25,12 +25,16 @@ class NoteAdapter : ListAdapter<Note,NoteAdapter.ViewHolder>(NoteDiffCallBack())
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(item,clickListener)
     }
 
     class ViewHolder private constructor(val binding: NoteItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Note) {
+        fun bind(
+            item: Note,
+            clickListener: NoteListener
+        ) {
             binding.note = item
+            binding.clickListener = clickListener
             binding.executePendingBindings()
         }
 
@@ -56,4 +60,11 @@ class NoteDiffCallBack : DiffUtil.ItemCallback<Note>()
         return oldItem == newItem
     }
 
+}
+
+class NoteListener(val clickListener : (noteId : Long) -> Unit){
+    fun onClick(note : Note)
+    {
+        return clickListener(note.noteId)
+    }
 }

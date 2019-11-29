@@ -5,16 +5,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-            <variable
-                name="note"
-                type="com.example.noteapp.database.Note" />
+
+        <variable
+            name="note"
+            type="com.example.noteapp.database.Note" />
+
+        <variable
+            name="clickListener"
+            type="com.example.noteapp.ui.home.NoteListener" />
     </data>
 
     <androidx.cardview.widget.CardView
+        android:onClick="@{() -> clickListener.onClick(note)}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/whiteColor"
         android:layout_marginBottom="8dp"
+        android:background="@color/whiteColor"
         app:cardCornerRadius="20dp">
 
         <LinearLayout
@@ -36,7 +42,6 @@
                     android:background="@drawable/circle_shape" />
 
                 <TextView
-                    app:setTitle="@{note}"
                     android:id="@+id/note_item_title_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -45,7 +50,8 @@
                     android:text="@string/title"
                     android:textColor="@color/blackColor"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:setTitle="@{note}" />
 
             </LinearLayout>
 
@@ -55,11 +61,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:setDescription="@{note}"
                 android:fontFamily="@font/roboto"
                 android:text="@string/place_holder_text"
                 android:textSize="12sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:setDescription="@{note}" />
         </LinearLayout>
 
 
